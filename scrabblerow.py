@@ -1,3 +1,5 @@
+#THIS BUILD WORKS, BUT IS VERY SLOW. CURRENTLY YIELDS A DECENT SCORE, NOT GREAT 
+
 alphabet = "abcdefghijklmnopqrstuvwxyz"
 
 def author():
@@ -6,9 +8,11 @@ def student_id():
     return ""
 def fill_words(pattern,words,scoring_f,minlen,maxlen):
     
+    foundWords = find_words(pattern,words,scoring_f,minlen,maxlen)
     
+    foundWords = foundWords + pattern[len(foundWords):]
     
-    return find_words(pattern,words,scoring_f,minlen,maxlen)
+    return foundWords
 
 def find_words(pattern,words,scoring_f,minlen,maxlen):
     patternCopy = pattern
@@ -20,19 +24,15 @@ def find_words(pattern,words,scoring_f,minlen,maxlen):
     wordDict = {}
     beg_point = 0
     states = []
-    position=(0,0)
     
-    
-    if len(pattern) == 0:
-        #NEED TO SET A BASE CASE
-        return ""
+    if len(pattern) < minlen:
+        return pattern
     
     for w in words:
         if len(w) in wordDict:
             wordDict[len(w)] += [w]
         else:
             wordDict[len(w)] = [w]
-    
     while len(patternCopy) > 1:
         if length in wordDict:
             for w in wordDict[length]:
@@ -65,11 +65,16 @@ def find_words(pattern,words,scoring_f,minlen,maxlen):
     for s in states:
         if s[0][1] > bestState[0][1]:
             bestState = s
-            
+    
     leftState = fill_words(bestState[1],words,scoring_f,minlen,maxlen)
     rightState = fill_words(bestState[2],words,scoring_f,minlen,maxlen)
-    #print(leftState,rightState)
+    if len(leftState) == 0:
+        leftState = ""
+    if len(rightState) == 0:
+        rightState = ""
     return leftState + bestState[0][0] + rightState
+
+
 
 minlen, maxlen = 4, 30
 letter_values = {
@@ -78,8 +83,6 @@ letter_values = {
     'o': 1, 'p': 3, 'q': 10, 'r': 1, 's': 1, 't': 1, 'u': 1,
     'v': 4, 'w': 4, 'x': 8, 'y': 4, 'z': 10
     }
-
-# Dictionary used to count the frequency of each letter.
 
 letter_counts = {c: 0 for c in letter_values}
 
@@ -108,5 +111,5 @@ def scoring_f(w):
 
 pattern = "-l-h--i-o--w--s--u--g-d-u-n-c-c--b--c-t-"
 
-print(pattern)
-print(fill_words(pattern,words,scoring_f,minlen,maxlen))
+# print(pattern)
+# print(fill_words(pattern,words,scoring_f,minlen,maxlen))

@@ -10,11 +10,11 @@ version = 'August 22, 2020'
 sep = '-'
 
 # Seed for the random number generator that produces the patterns.
-seed = 4444
+seed = 7777
 
 # Length of the random patterns.
 
-patlen = 40
+patlen = 50
 
 # Minimum and maximum length of words accepted in solutions.
 
