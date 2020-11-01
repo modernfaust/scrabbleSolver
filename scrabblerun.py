@@ -52,7 +52,6 @@ def scrabble_value(word):
     if minlen <= len(word) <= maxlen:
         return sum(letter_values.get(c, 0) for c in word)
     else:
-
         return 0
 
 
